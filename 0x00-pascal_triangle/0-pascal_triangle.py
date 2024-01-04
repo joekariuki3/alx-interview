@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-# function that return pascal triangle of n. n is 0 or less returns empty list
 
 def pascal_triangle(n):
+    """function that return pascal triangle of n
+    if n is 0 or less returns empty list"""
     if n <= 0:
         return []
 
