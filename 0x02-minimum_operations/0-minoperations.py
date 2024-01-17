@@ -1,21 +1,36 @@
 #!/usr/bin/python3
 """Minumum operation"""
-from typing import Union
 
 
-def minOperations(n: Union[int, float]) -> int:
+def minOperations(n: int) -> int:
     """function to calculate fewest number of operation
     needed to result in exacty n H characters"""
-    if not isinstance(n, int):
-        return 0
-    elif n == 1:
-        return 0
-    operations = 0
 
-    divider = 2
-    while n > 1:
-        if not n % divider == 0:
-            divider += 1
-        n = n / divider
-        operations += divider
+    copy = 1
+    paste = 1
+    current_char = 1
+    operations = 0
+    """holds current_chars (one to paste if no latest copy has been done)"""
+    clipboard = current_char
+
+    """check if n is int"""
+    if not isinstance(n, int) or n == 1:
+        return operations
+    while current_char < n:
+        """get remaining chars"""
+        remaining_char = n - current_char
+
+        """check if we copy n paste current chars we will exced remaining_char
+        if not do copy then past (2 operations)"""
+        if (remaining_char % current_char == 0):
+            """copy the characters and paste"""
+            clipboard = current_char  # copy operation
+            current_char += clipboard  # paste operation
+            """increment copy n paste operation"""
+            operations = operations + copy + paste
+        else:
+            """if there will be a remainder
+            just do a paste (1 operation) paste"""
+            current_char += clipboard  # paste operation
+            operations += paste  # increment paste operation
     return operations
