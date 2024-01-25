@@ -5,21 +5,31 @@ and parses log files"""
 import sys
 import re
 
+count = 10
+increment = 0
+totalSize = 0
+codes = {200: 0,
+         301: 0,
+         400: 0,
+         401: 0,
+         403: 0,
+         404: 0,
+         405: 0,
+         500: 0}
 
-def readStdIn():
 
-    count = 10
-    increment = 0
-    totalSize = 0
-    codes = {200: 0,
-             301: 0,
-             400: 0,
-             401: 0,
-             403: 0,
-             404: 0,
-             405: 0,
-             500: 0}
+def printStatistics(totalSize, codes):
+    """prints out the statstics"""
+    # print size
+    print(f"File size: {totalSize}")
 
+    # print codes
+    for code, value in sorted(codes.items()):
+        if value > 0:
+            print(f"{code}: {value}")
+
+
+try:
     for line in sys.stdin:
         s = r'(\S+) - \[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
         match = re.match(s, line)
@@ -40,18 +50,6 @@ def readStdIn():
                 """increment count by 10"""
                 count += 10
                 printStatistics(totalSize, codes)
-
-
-def printStatistics(totalSize, codes):
-    """prints out the statstics"""
-    # print size
-    print(f"File size: {totalSize}")
-
-    # print codes
-    for code, value in sorted(codes.items()):
-        if value > 0:
-            print(f"{code}: {value}")
-
-
-if __name__ == "__main__":
-    readStdIn()
+except KeyboardInterrupt:
+    # handle keyboard interruption
+    printStatistics(totalSize, codes)
