@@ -4,21 +4,22 @@ and parses log files"""
 
 import sys
 import re
+from typing import Dict
 
-count = 10
-increment = 0
-totalSize = 0
-codes = {200: 0,
-         301: 0,
-         400: 0,
-         401: 0,
-         403: 0,
-         404: 0,
-         405: 0,
-         500: 0}
+count: int = 10
+increment: int = 0
+totalSize: int = 0
+codes: Dict[int, int] = {200: 0,
+                         301: 0,
+                         400: 0,
+                         401: 0,
+                         403: 0,
+                         404: 0,
+                         405: 0,
+                         500: 0}
 
 
-def printStatistics(totalSize, codes):
+def printStatistics(totalSize: int, codes: Dict[int, int]) -> None:
     """prints out the statstics"""
     # print size
     print(f"File size: {totalSize}")
