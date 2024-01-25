@@ -11,14 +11,14 @@ def readStdIn():
     count = 10
     increment = 0
     totalSize = 0
-    codes = {"200": 0,
-             "301": 0,
-             "400": 0,
-             "401": 0,
-             "403": 0,
-             "404": 0,
-             "405": 0,
-             "500": 0}
+    codes = {200: 0,
+             301: 0,
+             400: 0,
+             401: 0,
+             403: 0,
+             404: 0,
+             405: 0,
+             500: 0}
 
     for line in sys.stdin:
         s = r'(\S+) - \[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
@@ -32,7 +32,8 @@ def readStdIn():
             increment += 1
 
             """count status codes of each line"""
-            codes[f"{status_code}"] += 1
+            status_code = int(status_code)
+            codes[status_code] += 1
 
             """if count is 10 print statistics"""
             if increment == count:
