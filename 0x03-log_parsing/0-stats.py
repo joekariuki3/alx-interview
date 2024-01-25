@@ -8,29 +8,23 @@ import re
 count = 10
 increment = 0
 totalSize = 0
-codes = {200: 0,
-         301: 0,
-         400: 0,
-         401: 0,
-         403: 0,
-         404: 0,
-         405: 0,
-         500: 0}
+codes = {}
 
 
 def printStatistics(totalSize, codes):
     """prints out the statstics"""
     # print size
-    print(f"File size: {totalSize}")
+    print("File size: {}".format(totalSize))
 
     # print codes
     for code, value in sorted(codes.items()):
         if value > 0:
-            print(f"{code}: {value}")
+            print("{}: {}".format(code, value))
 
 
 try:
-    for line in sys.stdin:
+    for index, line in enumerate(sys.stdin):
+        index += 1
         s = r'(\S+) - \[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
         match = re.match(s, line)
         if match:
@@ -38,18 +32,17 @@ try:
             ip_address, date, status_code, file_size = match.groups()
             totalSize += int(file_size)
 
-            """keep count"""
-            increment += 1
-
             """count status codes of each line"""
             status_code = int(status_code)
-            codes[status_code] += 1
+            if status_code in codes:
+                codes[status_code] += 1
+            else:
+                codes[status_code] = 1
 
-            """if count is 10 print statistics"""
-            if increment == count:
-                """increment count by 10"""
-                count += 10
+            """check if index[9] i.e position 10, 20, 30... print statistics"""
+            if index % 10 == 0:
                 printStatistics(totalSize, codes)
 except KeyboardInterrupt:
-    # handle keyboard interruption
+    pass
+finally:
     printStatistics(totalSize, codes)
