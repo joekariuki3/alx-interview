@@ -48,7 +48,7 @@ def printStatistics(totalSize, codes):
     print(f"File size: {totalSize}")
 
     # print codes
-    for code, value in codes.items():
+    for code, value in sorted(codes.items()):
         if value > 0:
             print(f"{code}: {value}")
 
