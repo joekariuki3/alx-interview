@@ -25,9 +25,10 @@ def printStatistics(totalSize, codes):
 try:
     for index, line in enumerate(sys.stdin):
         index += 1
-        s = r'(\S+) - \[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
+        s = r'(\S+)\s?-\s?\[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
         match = re.match(s, line)
         if match:
+            print(line)
             """get relevant data from the line"""
             ip_address, date, status_code, file_size = match.groups()
             totalSize += int(file_size)
