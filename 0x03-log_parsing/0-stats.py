@@ -25,7 +25,7 @@ def printStatistics(totalSize, codes):
 try:
     for index, line in enumerate(sys.stdin):
         index += 1
-        s = r'(\S+)\s?-\s?\[([^]]+)\] "GET /projects/260 HTTP/1.1" (\d+) (\d+)'
+        s = r'(\S+)\s?-\s?\[([^]]+)\] "GET /projects/260 HTTP/1.1" ([\d\w]+) (\d+)'
         match = re.match(s, line)
         if match:
             """get relevant data from the line"""
@@ -33,11 +33,12 @@ try:
             totalSize += int(file_size)
 
             """count status codes of each line"""
-            status_code = int(status_code)
-            if status_code in codes:
-                codes[status_code] += 1
-            else:
-                codes[status_code] = 1
+            if status_code.isdigit():
+                status_code = int(status_code)
+                if status_code in codes:
+                    codes[status_code] += 1
+                else:
+                    codes[status_code] = 1
 
             """check if index[9] i.e position 10, 20, 30... print statistics"""
             if index % 10 == 0:
