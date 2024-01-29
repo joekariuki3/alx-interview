@@ -1,46 +1,50 @@
 #!/usr/bin/python3
-"""validate UTF-8"""
+"""UTF-8 Validation"""
 
 from typing import List
 
 
 def validUTF8(data: List[int]) -> bool:
-    validList = []
-    for index, bit in enumerate(data):
-        bit = bin(bit).replace("0b", "")
-        # has more less than 8 bit meading starts
-        # with 0 it is ASCII valid unicode
-        if len(bit) <= 7:
-            validList.append(1)
-        elif len(bit) > 7:
-            # more than 7 bit meaning unicode lets check
-            # 2 bytes start with 110 next 2 bytes start with 10
-            if bit[0] == 1 and bit[1] == 1 and bit[2] == 0:
-                # check next 2 bytes
-                for i in range(1, 3):
-                    if data[index + i][0] == 1 and data[index + i][1] == 0:
-                        validList.append(1)
-                    else:
-                        validList.append(0)
+    """check the int values in the list
+    if they satisfy the rules of a sequence of utf-8
+    encoding retuen True else return False"""
 
-            # 3 bytes start with 1110 next 3 bytes start with 10
-            elif bit[0] == 1 and bit[1] == 1 and bit[2] == 1 and bit[3] == 0:
-                # check next 3 bytes
-                for i in range(1, 4):
-                    if data[index + i][0] == 1 and data[index + i][1] == 0:
-                        validList.append(1)
-                    else:
-                        validList.append(0)
+    index = 0
+    data_length = len(data)
 
-            # 4 bytes start with 11110 next 4 bytes start wit 10
-            elif (bit[0] == 1 and bit[1] == 1 and bit[2] == 1
-                    and bit[3] == 1 and bit[4] == 0):
-                # check next 2 bytes
-                for i in range(1, 5):
-                    if data[index + i][0] == 1 and data[index + i][1] == 0:
-                        validList.append(1)
-                    else:
-                        validList.append(0)
-    if 0 in validList or not validList or not len(data) == len(validList):
-        return False
-    return True
+    while index < data_length:
+        byte = data[index]  # current byte
+
+        if byte < 128:  # Ascii 0 to 127 valid utf-8
+            index += 1  # Move to the next byte
+        # Two-byte sequence 192-223 (110xxxxx 10xxxxxx)
+        elif 192 <= byte <= 223:
+            # Check if there are enough bytes left in the data
+            # list and if the next byte starts with '10'
+            if index + 1 >= data_length or not (128 <= data[index + 1] < 192):
+                return False
+            # Move to the next character after the two-byte sequence
+            index += 2
+        # Three-byte sequence 224-239 (1110xxxx 10xxxxxx 10xxxxxx)
+        elif 224 <= byte <= 239:
+            # Check if there are enough bytes left
+            # in the data list and if the next two bytes start with '10'
+            if (index + 2 >= data_length or not
+                    (128 <= data[index + 1] < 192 and
+                        128 <= data[index + 2] < 192)):
+                return False
+            index += 3  # move next to three-byte
+        # Four-byte sequence 240-247 (11110xxx 10xxxxxx 10xxxxxx 10xxxxxx)
+        elif 240 <= byte <= 247:
+            # Check if there are enough bytes left in the data list and
+            # if the next three bytes start with '10'
+            if (index + 3 >= data_length or
+                    not (128 <= data[index + 1] < 192
+                         and 128 <= data[index + 2] < 192
+                         and 128 <= data[index + 3] < 192)):
+                return False
+            index += 4  # Move to next four-byte sequence
+        else:
+            return False  # no valid UTF-8 sequence range found
+
+    return True  # If all bytes are valid UTF-8 sequences, return True
