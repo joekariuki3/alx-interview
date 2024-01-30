@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""UTF-8 Validation"""
+"""Method to check if a given data set
+is a valid UTF-8 encoding"""
 
 from typing import List
 
@@ -47,4 +48,4 @@ def validUTF8(data: List[int]) -> bool:
         else:
             return False  # no valid UTF-8 sequence range found
 
-    return True  # If all bytes are valid UTF-8 sequences, return True
+    return True  # If all bytes are valid UTF-8 sequences
