@@ -40,9 +40,9 @@ def validUTF8(data: List[int]) -> bool:
             # Check if there are enough bytes left in the data list and
             # if the next three bytes start with '10'
             if (index + 3 >= data_length or
-                    not (128 <= data[index + 1] < 192
-                         and 128 <= data[index + 2] < 192
-                         and 128 <= data[index + 3] < 192)):
+                    not (128 <= data[index + 1] < 192 and
+                         128 <= data[index + 2] < 192 and
+                         128 <= data[index + 3] < 192)):
                 return False
             index += 4  # Move to next four-byte sequence
         else:
