@@ -7,7 +7,7 @@ import sys
 def print_solution(queens):
     """Prints the solution in the format [[row1, col1],..., [rowN, colN]]."""
     for row, col in queens:
-        print(f"[{row}, {col}]", end=" ")
+        print("[{}, {}]".format(row, col), end=" ")
     print()
 
 
