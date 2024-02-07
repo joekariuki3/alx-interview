@@ -4,13 +4,6 @@
 import sys
 
 
-def print_solution(queens):
-    """Prints the solution in the format [[row1, col1],..., [rowN, colN]]."""
-    for row, col in queens:
-        print("[{}, {}]".format(row, col), end=" ")
-    print()
-
-
 def is_safe(queens, row, col):
     """Checks if it's safe to place a queen at the given row and column."""
     for r, c in queens:
@@ -55,7 +48,7 @@ def nqueens(N):
 
     # Print all solutions found.
     for sol in solutions:
-        print_solution(sol)
+        print(sol)
 
 
 if __name__ == "__main__":
