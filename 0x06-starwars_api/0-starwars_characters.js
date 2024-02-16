@@ -2,31 +2,30 @@
 // script that prints all characters of a star wars movie
 
 const request = require('request');
+const { promisify } = require('util');
 
+const asyncRequest = promisify(request);
 function movieCharacters (url, movieId) {
   const fullUrl = url + movieId.toString();
-  let characters = [];
-  request(fullUrl, function (error, results) {
-    if (error) {
-      console.log(error);
-    }
-    const data = JSON.parse(results.body);
-    characters = data.characters;
-    // if characters are present. using thir url get their name
-    if (characters.length > 0) {
-      for (let i = 0; i < characters.length; i++) {
-        // get data of each character and extact their name
-        request(characters[i], function (error, response) {
-          if (error) {
-            console.log(error);
-          }
-          const personObj = JSON.parse(response.body);
-          const name = personObj.name;
-          console.log(name);
-        });
-      }
-    }
-  });
+  asyncRequest(fullUrl)
+    .then(response => {
+      const filmData = JSON.parse(response.body);
+      const characters = filmData.characters;
+
+      const characterPromises = characters.map(characterUrl => {
+        return asyncRequest(characterUrl).then(response => JSON.parse(response.body));
+      });
+
+      return Promise.all(characterPromises);
+    })
+    .then(characters => {
+      characters.forEach(character => {
+        console.log(character.name);
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
 const argv = process.argv;
