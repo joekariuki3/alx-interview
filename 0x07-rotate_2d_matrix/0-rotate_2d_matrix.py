@@ -19,9 +19,7 @@ def rotate_2d_matrix(matrix: List[int]) -> None:
             matrix[i][j] = matrix[j][i]
             matrix[j][i] = temp
             j += 1
+        # reverse row
+        matrix[i].reverse()
         i += 1
-
-    # reverse each row
-    for row in matrix:
-        row.reverse()
     return
