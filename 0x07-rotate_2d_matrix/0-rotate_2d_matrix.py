@@ -2,10 +2,8 @@
 """rotate a matric 90 degrees
 """
 
-from typing import List
 
-
-def rotate_2d_matrix(matrix: List[int]) -> None:
+def rotate_2d_matrix(matrix):
     """rotate matrix 90 degrees clockwise
     """
     # transpose the matrix 1st, make all col to become rows
@@ -22,4 +20,3 @@ def rotate_2d_matrix(matrix: List[int]) -> None:
         # reverse row
         matrix[i].reverse()
         i += 1
-    return
