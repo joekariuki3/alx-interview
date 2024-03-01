@@ -1,24 +1,39 @@
 #!/usr/bin/python3
-"""script to find minumum number of coins we can use to make change
+"""script to find min number of coins needed to make a certain amount
 """
 
-from typing import List
 
-
-def makeChange(coins: List[int], total: int) -> int:
-    """using coins provided,
-    make change of total with minimum number of coins
-    Return Minimum number of coins or -1
+def makeChange(coins, total):
+    """Return min number of coins to make total
     """
     if total <= 0:
         return 0
+    count = 0
 
-    max_coin = max(coins)
-    changes = [max_coin + 1] * (total + 1)
-    changes[0] = 0
+    # sort the coins from largest to smallest
+    coins = sorted(coins, reverse=True)
+
+    # loop over each coin
     for coin in coins:
-        for amount in range(coin, total + 1):
-            changes[amount] = min(changes[amount], changes[amount - coin] + 1)
-    if changes[total] == max_coin + 1:
+        # when total is geater than current coin
+        # use the coin as much as possible
+        while total >= coin:
+            # reduce the total with current coin
+            total = total - coin
+
+            # count the number of coins used
+            count = count + 1
+
+            # if total is 0 no need to continue
+            # we have our required coins break the inner loop
+            if total == 0:
+                break
+
+        # same here break outer loop
+        if total == 0:
+            break
+
+    # if total is not 0 means we are not able to make the change
+    if total != 0:
         return -1
-    return changes[total]
+    return count
