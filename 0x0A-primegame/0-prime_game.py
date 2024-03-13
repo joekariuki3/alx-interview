@@ -33,18 +33,18 @@ def get_primes(n):
 def isWinner(x, nums):
     """return the winner of the game
     """
-    player_1_wins = 0  # Maria
-    player_2_wins = 0  # Ben
+    maria = 0
+    ben = 0
 
     for n in nums:
         primes = get_primes(n)
         if len(primes) % 2 == 0:
-            player_1_wins += 1
+            ben += 1
         else:
-            player_2_wins += 1
-    if player_1_wins > player_2_wins:
+            maria += 1
+    if maria > ben:
         return 'Maria'
-    elif player_1_wins < player_2_wins:
+    elif maria < ben:
         return 'Ben'
     else:
         return None
