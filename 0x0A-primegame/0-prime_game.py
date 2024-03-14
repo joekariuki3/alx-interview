@@ -1,50 +1,50 @@
 #!/usr/bin/python3
-"""Prime Game
-"""
+""" Prime Game """
 
 
-def is_prime(i):
-    """checks if a number is prime
-    """
-    if i <= 1:
-        return False
-    if i <= 3:
-        return True
-    if i % 2 == 0 or i % 3 == 0:
-        return False
-    x = 5
-    while x * x <= i:
-        if i % x == 0 or i % (x + 2) == 0:
+def isprime(n):
+    """ Return prime number """
+    for i in range(2, n):
+        if n % i == 0:
             return False
-        x += 6
     return True
 
 
-def get_primes(n):
-    """generate prime numbers up to n
-    """
-    prime_nums = []
-    for i in range(2, n+1):
-        if is_prime(i):
-            prime_nums.append(i)
-    return prime_nums
+def delete_numbers(n, nums):
+    """ Remove numbers - return zero """
+    for i in range(len(nums)):
+        if nums[i] % n == 0:
+            nums[i] = 0
 
 
 def isWinner(x, nums):
-    """return the winner of the game
+    """ Return name of player that won
+    most rounds
     """
-    maria = 0
-    ben = 0
-
-    for n in nums:
-        primes = get_primes(n)
-        if len(primes) % 2 == 0:
-            ben += 1
+    nums.sort()
+    winner = False
+    Maria = 0
+    Ben = 0
+    for game in range(x):
+        nums2 = list(range(1, nums[game] + 1))
+        turn = 0
+        while True:
+            change = False
+            for i, n in enumerate(nums2):
+                if n > 1 and isprime(n):
+                    delete_numbers(n, nums2)
+                    change = True
+                    turn += 1
+                    break
+            if change is False:
+                break
+        if turn % 2 != 0:
+            Maria += 1
         else:
-            maria += 1
-    if maria > ben:
-        return 'Maria'
-    elif maria < ben:
-        return 'Ben'
-    else:
+            Ben += 1
+
+    if Maria == Ben:
         return None
+    if Maria > Ben:
+        return "Maria"
+    return "Ben"
