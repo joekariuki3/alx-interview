@@ -1,4 +1,12 @@
-#  Island Perimeter 
-## calculate the perameter of an island in a 2dmatrix
-- land is represented by 1
-- water is represented by 0
+# Island Perimeter
+
+Calculate the perimeter of an island in a 2D grid.
+
+- Land is `1`, water is `0`.
+- Cells are connected horizontally/vertically, not diagonally.
+
+### Usage
+
+```bash
+python3 0-main.py
+```
